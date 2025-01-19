@@ -21,6 +21,8 @@ class Planet:
 
 
 def main():
+    current_dir = os.path.dirname(__file__)
+    os.chdir(current_dir)
     with open ('planeter.txt', 'r') as f:
         planeter_lines = f.readlines()
     planet_name = ""
