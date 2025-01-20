@@ -1,6 +1,6 @@
 import os
 import math
-pi = math.pi
+PI = math.pi
 G = 6.67e-11
 
 class Planet:
@@ -11,7 +11,7 @@ class Planet:
     def mass(self):
         distance = float(self.distance)*1e6
         period = float(self.period)
-        mass = 4*(pi**2)*(distance**3) / ( (period**2) * G )
+        mass = 4*(PI**2)*(distance**3) / ( (period**2) * G )
         return mass
     def getname(self):
         return self.name
