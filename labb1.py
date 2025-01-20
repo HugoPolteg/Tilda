@@ -1,6 +1,6 @@
 import os
 import math
-pi = math.pi
+PI = math.pi
 G = 6.67e-11
 
 class Planet:
@@ -10,8 +10,8 @@ class Planet:
         self.period = period
     def mass(self):
         distance = float(self.distance)*1e6
-        period = float(self.period)
-        mass = 4*(pi**2)*(distance**3) / ( (period**2) * G )
+        period = float(self.period)*3600
+        mass = 4*(PI**2)*(distance**3) / ( (period**2) * G )
         return mass
     def getname(self):
         return self.name
@@ -34,9 +34,11 @@ def main():
             line = line.split('/')
             distance = line[0].strip()
             period = line[1].strip()
-            if planet_name != "" and planets == [] or planet_name != planets[-1].getname():
+            if planet_name != "" and not planets or planet_name != planets[-1].getname():
                 planets.append(Planet(planet_name, distance, period))
     for planet in planets:
         print(planet)
-main()
+
+if __name__ == '__main__':
+    main()
 
