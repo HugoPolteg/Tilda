@@ -1,6 +1,7 @@
 import os
 import math
 PI = math.pi
+PI = math.pi
 G = 6.67e-11
 
 class Planet:
