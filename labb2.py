@@ -1,52 +1,25 @@
 from array import array
-from collections import deque
+from  arrayQFile import ArrayQ
+from linkedQFile import LinkedQ
 
-class ArrayQ:
-    def __init__(self, arr=None):
-        
 
-        if arr is None:
-            arr = array('i')  
+if __name__ == "__main__":
+    user_inputs = input()
+    user_inputs = user_inputs.split(' ')
+    user_input_arr = array('i')
+    q = ArrayQ()
+    for user_input in user_inputs:
+        if user_input.isnumeric():
+            q.enqueue(int(user_input.strip()))
 
-        if isinstance(arr, list):
-            arr = array('i',arr)
-
-        if not isinstance(arr, array):
-            raise TypeError("Input must be an arraym, list or empty")
-        
-        self.arr = arr
-    def queue(self):
-        self.arr.clear()
-        return self.arr
-    
-    def enqueue(self, insertion):
-        self.insertion = insertion
-        self.arr.append(self.insertion)
-        return self.arr
-    
-    def dequeue(self):
-        first = self.arr.pop(0)
-        return first
-    
-    def isempty(self, empty):
-        self.empty = empty
-
-        if len(self.arr) == 0:
-            empty = True
-
+    bord = []
+    count = 0 
+    while q.size() != 0:
+        if count % 2 == 0:
+            first = q.dequeue()
+            q.enqueue(first)
         else:
-            empty = False
-    def size(self,size):
-        self.size = size
-        self.size = size(self.arr)
-        return self.size
-    
-q = ArrayQ()
-q.enqueue(1)
-q.enqueue(2)
-x = q.dequeue()
-y = q.dequeue()
-if (x == 1 and y == 2):
-    print("OK")
-else:
-    print("FAILED")
+            first = q.dequeue()
+            bord.append(first)
+        count += 1
+    print(bord)
