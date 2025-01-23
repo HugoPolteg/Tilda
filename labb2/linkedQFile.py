@@ -14,9 +14,10 @@ class LinkedQ:
 
     def enqueue(self, value):
         '''Lägger till en nod längst bak i listan/kön'''
-        node = Node(value, self.last)
+        node = Node(value)
+        if self.last is not None:
+            self.last.next = node
         self.last = node
-        
         if self.first is None:
             self.first = node
     def dequeue(self):
@@ -30,16 +31,7 @@ class LinkedQ:
             self.last = None
             return value
         
-        itr = self.last
-        
-        while itr:
-            #Kollar om nästa element är slutet av kön, isf sätter den det aktuella elementet som först och tar bort referensen till den efter
-            #Funkar iom automatisk garbage collection, ex knas i c++
-            if itr.next.next is None:
-                self.first = itr
-                itr.next = None
-                break
-            itr = itr.next
+        self.first = self.first.next
         
         return value
     
@@ -49,7 +41,7 @@ class LinkedQ:
     def size(self):
         '''returnerar size genom att iterera o räkna elementen'''
         count = 0 
-        itr = self.last
+        itr = self.first
         while itr:
             itr = itr.next
             count += 1 
@@ -57,7 +49,7 @@ class LinkedQ:
     
     def __str__(self):
         '''returnerar listan som en sträng med pilar för förtydligande av sekvens'''
-        itr = self.last
+        itr = self.first
         qstring = ''
         while itr:
             qstring += str(itr.value) + '>'

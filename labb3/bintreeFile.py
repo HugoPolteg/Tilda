@@ -53,7 +53,7 @@ def putta(root:Node, value):
     while True:
         if value == itr.value:
             print("Värdet finns redan i trädet")
-            return ""
+            return root
         if value > itr.value:
             if itr.right is not None:
                 itr = itr.right
