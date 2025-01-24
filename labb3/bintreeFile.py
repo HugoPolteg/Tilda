@@ -68,6 +68,7 @@ def putta(root:Node, value):
                 return root
     
 def skriv(root:Node):
+
     if root is not None:
         skriv(root.left)
         print(root.value)
