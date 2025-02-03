@@ -1,6 +1,6 @@
 import string
 from linkedQFile import LinkedQ
-
+import os
 
 def makechildrenv1(word, wordlist):
     '''Kör igenom och kollar efter barn på naivt sätt'''
@@ -56,6 +56,7 @@ def ver2():
     start = input("Startord: ")
     target = input("Slutord: ")
     buckets = {}
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     with open('word3.txt', 'r', encoding='utf-8') as file:
         for line in file.readlines():
             for word in line.split(' '):
