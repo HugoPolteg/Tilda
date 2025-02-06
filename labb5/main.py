@@ -1,4 +1,5 @@
 from linkedQFile import LinkedQ
+import os
 
 class ParentNode:
     '''Klass med värdet på noden och dess förälder/tidigare nod'''
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     start = input("Startord: ")
     target = input("Slutord: ")
     buckets = {}
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     with open('word3.txt', 'r', encoding='utf-8') as file:
         for line in file.readlines():
             for word in line.split(' '):
