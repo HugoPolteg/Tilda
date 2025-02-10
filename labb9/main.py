@@ -8,48 +8,53 @@ class Syntaxfel(Exception):
 
 def readformula(input:str):
     '''Tar formatet <formel>::= <mol> \n och fixar det till en lista genom split -> iterera'''
-    for mol in input.split('\n'):
+    for mol in input.splitlines():
         q = LinkedQ()
         for char in mol:
             q.enqueue(char)
         readmol(q)
 def readformula_test(input:str):
-    q = LinkedQ()
-    for char in input:
-        q.enqueue(char)
-    try:
-        readmol(q)
-    except Syntaxfel as e:
-        return str(e)
+    '''Testar formulan med unittest via test.py'''
+    for mol in input.splitlines():
+        q = LinkedQ()
+        for char in mol:
+            q.enqueue(char)
+        try:
+            readmol(q)
+        except Syntaxfel as e:
+            return str(e)
     return "Formeln är syntaktiskt korrekt"
 def readmol(q:LinkedQ, parentheses = False):
     '''Läser in molekyl med syntax: <mol> ::= <group> | <group><mol>
- (basically antingen en grupp eller en grupp med en molekyl efter)'''
+    (basically antingen en grupp eller en grupp med en molekyl efter)
+    Använder parentheses för att kolla om det är en molekyl inom paranteser
+    skickar vidare den om den kallas rekursivt'''
     readgroup(q)
     if q.peek() == ")" and parentheses:
         return
     if not q.isempty():
         readmol(q, parentheses)
 def checkgroupstart(char):
-    return (char >= "A" and char <= "Z" or char == "(" or char >= "a" and char <= "z")
+    return (char >= "A" and char <= "Z") or char == "(" or (char >= "a" and char <= "z")
 def readgroup(q:LinkedQ):
     '''Läser in grupp med syntax: <group> ::= <atom> |<atom><num> | (<mol>) <num>
  (basically antingen en atom eller en atom med antal efter eller en molekyl inom parantes med nummer efter)'''
-    group_start = q.peek()
-    if not checkgroupstart(group_start):
-        raise Syntaxfel("Felaktig gruppstart vid radslutet " + str(q))
-    if group_start == "(":
-        q.dequeue()
-        readmol(q, True)
-        if q.peek() != ")":
-            raise Syntaxfel("Saknad högerparentes vid radslutet " + str(q))
-        q.dequeue()
-        readnum(q)
-    else:
-        readatom(q)
-        if not q.isempty():
-            if q.peek().isdigit():
-                readnum(q)
+    if not q.isempty():
+        group_start = q.peek()
+        if not checkgroupstart(group_start):
+            raise Syntaxfel("Felaktig gruppstart vid radslutet " + str(q))
+        if group_start == "(":
+            q.dequeue()
+            readmol(q, True)
+            if q.peek() != ")":
+                raise Syntaxfel("Saknad högerparentes vid radslutet " + str(q))
+            q.dequeue()
+            readnum(q)
+        else:
+            readatom(q)
+            if not q.isempty():
+                if q.peek().isdigit():
+                    readnum(q)
 
 def readatom(q:LinkedQ):
     '''Läser in en atmom som: <atom>  ::= <LETTER> | <LETTER><letter> (basically antingen en stor bokstav eller en stor följt av en liten)'''
@@ -60,13 +65,11 @@ def readatom(q:LinkedQ):
             raise Syntaxfel("Okänd atom vid radslutet " + str(q))
     elif char + q.peek() not in ATOMS:
         if char not in ATOMS:
-            q.dequeue()
+            if q.peek() >= "a" and q.peek() <= "z":
+                q.dequeue()
             raise Syntaxfel("Okänd atom vid radslutet " + str(q))
     else:
         q.dequeue()
-
-        
-    
 
 def readuppercase(q:LinkedQ):
     '''Kollar efter stora bokstäver, syntax => <LETTER>::= A | B | C | ... | Z'''
