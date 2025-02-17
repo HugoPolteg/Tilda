@@ -34,13 +34,28 @@ def readnum(q):
     '''Kollar efter tal över 2 (som inte börjar på 0) => <num>   ::= 2 | 3 | 4 | ...'''
     nums = []
     while not q.isempty():
-        nums.append(q.dequeue())
+        if q.peek().isdigit():
+            nums.append(q.dequeue())
+        else:
+            break
     num = "".join(nums)
     #lagom knasig if-sats
     if num.isdigit() and (int(nums[0]) > 1 or int(nums[0]) == 1 and int(num) > 1):
         return
+    if not num.isdigit():
+        raise Syntaxfel("Saknad siffra vid radslutet " + str(q))
     raise Syntaxfel("För litet tal vid radslutet " + str(num)[1:] + str(q))
 
+def readmolecule_test(molecule):
+    '''Testar om en molekyl är syntaktiskt korrekt'''
+    q = LinkedQ()
+    try:
+        for char in molecule:
+            q.enqueue(char)
+        readmolecule(q)
+    except Syntaxfel as msg:
+        return str(msg)
+    return "Formeln är syntaktiskt korrekt"
 
 def main():
     '''Kör tills användaren skriver #'''
