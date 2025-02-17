@@ -78,7 +78,7 @@ class Hashtable:
         key_value = 0
         for char in key:
             #Multiplicerar för att undvika kollision
-            key_value = key_value*33 + ord(char)
+            key_value += key_value*33 + ord(char)
         hash_value = key_value % self.size
         return hash_value
 
@@ -94,5 +94,4 @@ if __name__ == '__main__':
                     dicthash.store(key,value)
                 else:
                     key = word
-    print(dicthash)
             
